@@ -5,10 +5,28 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
+      - name: Show repo tree (debug)
+        run: |
+          echo "PWD: $(pwd)"
+          ls -la
+          echo "---- 4_Unit_testing ----"
+          ls -la 4_Unit_testing || true
+          echo "---- test_cases ----"
+          ls -la 4_Unit_testing/test_cases || true
+          echo "---- CMakeLists.txt ----"
+          sed -n '1,120p' 4_Unit_testing/CMakeLists.txt || true
+          echo "---- cmake version ----"
+          cmake --version
+          echo "---- c++ version ----"
+          c++ --version
+
       - name: Configure
         run: cmake -S 4_Unit_testing -B 4_Unit_testing/build
+
       - name: Build
         run: cmake --build 4_Unit_testing/build --config Debug
+
       - name: Run tests
         run: ctest --output-on-failure
         working-directory: 4_Unit_testing/build
