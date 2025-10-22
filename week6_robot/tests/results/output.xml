@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot generator="Robot 7.3.2 (Python 3.11.2 on win32)" generated="2025-10-22T20:19:19.463965" rpa="false" schemaversion="5">
+<suite id="s1" name="Serial Time Parser" source="C:\Users\tempp\robot_test\tests\serial_time_parser.robot">
+<test id="s1-t1" name="Connect Serial" line="11">
+<kw name="Add Port" owner="SerialLibrary">
+<msg time="2025-10-22T20:19:19.506093" level="TRACE">Arguments: [ 'COM7' | baudrate='115200' ]</msg>
+<msg time="2025-10-22T20:19:19.508161" level="TRACE">Return: Serial&lt;id=0x1a03f862c20, open=True&gt;(port='COM7', baudrate=115200, bytesize=8, parity='N', stopbits=1, timeout=1.0, xonxoff=False, rtscts=False, dsrdtr=False)</msg>
+<arg>${PORT}</arg>
+<arg>baudrate=${BAUD}</arg>
+<doc>Adds new port with specified locator.</doc>
+<status status="PASS" start="2025-10-22T20:19:19.506093" elapsed="0.002068"/>
+</kw>
+<kw name="Open Port" owner="SerialLibrary">
+<msg time="2025-10-22T20:19:19.508161" level="TRACE">Arguments: [ 'COM7' ]</msg>
+<msg time="2025-10-22T20:19:19.508161" level="TRACE">Return: None</msg>
+<arg>${PORT}</arg>
+<doc>Opens specified port.</doc>
+<status status="PASS" start="2025-10-22T20:19:19.508161" elapsed="0.000000"/>
+</kw>
+<kw name="Port Should Be Open" owner="SerialLibrary">
+<msg time="2025-10-22T20:19:19.509162" level="TRACE">Arguments: [ 'COM7' ]</msg>
+<msg time="2025-10-22T20:19:19.509162" level="TRACE">Return: None</msg>
+<arg>${PORT}</arg>
+<doc>Fails if specified port is closed.</doc>
+<status status="PASS" start="2025-10-22T20:19:19.509162" elapsed="0.000000"/>
+</kw>
+<kw name="Reset Input Buffer" owner="SerialLibrary">
+<msg time="2025-10-22T20:19:19.509162" level="TRACE">Arguments: [  ]</msg>
+<msg time="2025-10-22T20:19:19.509162" level="TRACE">Return: None</msg>
+<doc>Clears input buffer.</doc>
+<status status="PASS" start="2025-10-22T20:19:19.509162" elapsed="0.000000"/>
+</kw>
+<kw name="Reset Output Buffer" owner="SerialLibrary">
+<msg time="2025-10-22T20:19:19.509162" level="TRACE">Arguments: [  ]</msg>
+<msg time="2025-10-22T20:19:19.510057" level="TRACE">Return: None</msg>
+<doc>Clears outout buffer.</doc>
+<status status="PASS" start="2025-10-22T20:19:19.509162" elapsed="0.000895"/>
+</kw>
+<status status="PASS" start="2025-10-22T20:19:19.505053" elapsed="0.005004"/>
+</test>
+<test id="s1-t2" name="Valid Time String Returns Seconds" line="18">
+<kw name="Write Data" owner="SerialLibrary">
+<msg time="2025-10-22T20:19:19.511058" level="TRACE">Arguments: [ '000120\n' | encoding='ascii' ]</msg>
+<msg time="2025-10-22T20:19:19.512063" level="TRACE">Return: None</msg>
+<arg>000120\n</arg>
+<arg>encoding=ascii</arg>
+<doc>Writes data into the port.</doc>
+<status status="PASS" start="2025-10-22T20:19:19.511058" elapsed="0.001005"/>
+</kw>
+<kw name="Read Until" owner="SerialLibrary">
+<msg time="2025-10-22T20:19:19.512063" level="TRACE">Arguments: [ terminator='\n' | encoding='ascii' | timeout='3' ]</msg>
+<msg time="2025-10-22T20:19:20.544502" level="TRACE">Return: '80\r\n'</msg>
+<msg time="2025-10-22T20:19:20.544502" level="INFO">${resp} = 80
+</msg>
+<var>${resp}</var>
+<arg>terminator=\n</arg>
+<arg>encoding=ascii</arg>
+<arg>timeout=${TIMEOUT}</arg>
+<doc>Read until a termination sequence is found, size exceeded or timeout.</doc>
+<status status="PASS" start="2025-10-22T20:19:19.512063" elapsed="1.032439"/>
+</kw>
+<kw name="Strip String" owner="String">
+<msg time="2025-10-22T20:19:20.544502" level="TRACE">Arguments: [ '80\r\n' ]</msg>
+<msg time="2025-10-22T20:19:20.545498" level="TRACE">Return: '80'</msg>
+<msg time="2025-10-22T20:19:20.545498" level="INFO">${resp} = 80</msg>
+<var>${resp}</var>
+<arg>${resp}</arg>
+<doc>Remove leading and/or trailing whitespaces from the given string.</doc>
+<status status="PASS" start="2025-10-22T20:19:20.544502" elapsed="0.000996"/>
+</kw>
+<kw name="Should Be Equal As Integers" owner="BuiltIn">
+<msg time="2025-10-22T20:19:20.545498" level="TRACE">Arguments: [ '80' | '80' ]</msg>
+<msg time="2025-10-22T20:19:20.545498" level="DEBUG">Argument types are:
+&lt;class 'str'&gt;
+&lt;class 'str'&gt;</msg>
+<msg time="2025-10-22T20:19:20.545498" level="TRACE">Return: None</msg>
+<arg>${resp}</arg>
+<arg>80</arg>
+<doc>Fails if objects are unequal after converting them to integers.</doc>
+<status status="PASS" start="2025-10-22T20:19:20.545498" elapsed="0.000000"/>
+</kw>
+<doc>000120 -&gt; 80</doc>
+<status status="PASS" start="2025-10-22T20:19:19.511058" elapsed="1.034440"/>
+</test>
+<test id="s1-t3" name="Invalid Seconds Are Error" line="25">
+<kw name="Write Data" owner="SerialLibrary">
+<msg time="2025-10-22T20:19:20.547489" level="TRACE">Arguments: [ '001067\n' | encoding='ascii' ]</msg>
+<msg time="2025-10-22T20:19:20.547489" level="TRACE">Return: None</msg>
+<arg>001067\n</arg>
+<arg>encoding=ascii</arg>
+<doc>Writes data into the port.</doc>
+<status status="PASS" start="2025-10-22T20:19:20.547489" elapsed="0.000000"/>
+</kw>
+<kw name="Read Until" owner="SerialLibrary">
+<msg time="2025-10-22T20:19:20.548526" level="TRACE">Arguments: [ terminator='\n' | encoding='ascii' | timeout='3' ]</msg>
+<msg time="2025-10-22T20:19:21.574911" level="TRACE">Return: '-6\r\n'</msg>
+<msg time="2025-10-22T20:19:21.574911" level="INFO">${resp} = -6
+</msg>
+<var>${resp}</var>
+<arg>terminator=\n</arg>
+<arg>encoding=ascii</arg>
+<arg>timeout=${TIMEOUT}</arg>
+<doc>Read until a termination sequence is found, size exceeded or timeout.</doc>
+<status status="PASS" start="2025-10-22T20:19:20.547489" elapsed="1.027422"/>
+</kw>
+<kw name="Strip String" owner="String">
+<msg time="2025-10-22T20:19:21.574911" level="TRACE">Arguments: [ '-6\r\n' ]</msg>
+<msg time="2025-10-22T20:19:21.575904" level="TRACE">Return: '-6'</msg>
+<msg time="2025-10-22T20:19:21.575904" level="INFO">${resp} = -6</msg>
+<var>${resp}</var>
+<arg>${resp}</arg>
+<doc>Remove leading and/or trailing whitespaces from the given string.</doc>
+<status status="PASS" start="2025-10-22T20:19:21.574911" elapsed="0.000993"/>
+</kw>
+<kw name="Should Be Equal As Integers" owner="BuiltIn">
+<msg time="2025-10-22T20:19:21.575904" level="TRACE">Arguments: [ '-6' | '-6' ]</msg>
+<msg time="2025-10-22T20:19:21.575904" level="DEBUG">Argument types are:
+&lt;class 'str'&gt;
+&lt;class 'str'&gt;</msg>
+<msg time="2025-10-22T20:19:21.575904" level="TRACE">Return: None</msg>
+<arg>${resp}</arg>
+<arg>-6</arg>
+<doc>Fails if objects are unequal after converting them to integers.</doc>
+<status status="PASS" start="2025-10-22T20:19:21.575904" elapsed="0.000000"/>
+</kw>
+<doc>001067 -&gt; -6 (sekunnit 0..59)</doc>
+<status status="PASS" start="2025-10-22T20:19:20.546493" elapsed="1.029411"/>
+</test>
+<test id="s1-t4" name="Non-Digit Is NAN Error" line="32">
+<kw name="Write Data" owner="SerialLibrary">
+<msg time="2025-10-22T20:19:21.577380" level="TRACE">Arguments: [ '12AB56\n' | encoding='ascii' ]</msg>
+<msg time="2025-10-22T20:19:21.577380" level="TRACE">Return: None</msg>
+<arg>12AB56\n</arg>
+<arg>encoding=ascii</arg>
+<doc>Writes data into the port.</doc>
+<status status="PASS" start="2025-10-22T20:19:21.575904" elapsed="0.001476"/>
+</kw>
+<kw name="Read Until" owner="SerialLibrary">
+<msg time="2025-10-22T20:19:21.577380" level="TRACE">Arguments: [ terminator='\n' | encoding='ascii' | timeout='3' ]</msg>
+<msg time="2025-10-22T20:19:22.618592" level="TRACE">Return: '-3\r\n'</msg>
+<msg time="2025-10-22T20:19:22.618592" level="INFO">${resp} = -3
+</msg>
+<var>${resp}</var>
+<arg>terminator=\n</arg>
+<arg>encoding=ascii</arg>
+<arg>timeout=${TIMEOUT}</arg>
+<doc>Read until a termination sequence is found, size exceeded or timeout.</doc>
+<status status="PASS" start="2025-10-22T20:19:21.577380" elapsed="1.041212"/>
+</kw>
+<kw name="Strip String" owner="String">
+<msg time="2025-10-22T20:19:22.619514" level="TRACE">Arguments: [ '-3\r\n' ]</msg>
+<msg time="2025-10-22T20:19:22.619514" level="TRACE">Return: '-3'</msg>
+<msg time="2025-10-22T20:19:22.619514" level="INFO">${resp} = -3</msg>
+<var>${resp}</var>
+<arg>${resp}</arg>
+<doc>Remove leading and/or trailing whitespaces from the given string.</doc>
+<status status="PASS" start="2025-10-22T20:19:22.618592" elapsed="0.000922"/>
+</kw>
+<kw name="Should Be Equal As Integers" owner="BuiltIn">
+<msg time="2025-10-22T20:19:22.619514" level="TRACE">Arguments: [ '-3' | '-3' ]</msg>
+<msg time="2025-10-22T20:19:22.619514" level="DEBUG">Argument types are:
+&lt;class 'str'&gt;
+&lt;class 'str'&gt;</msg>
+<msg time="2025-10-22T20:19:22.619514" level="TRACE">Return: None</msg>
+<arg>${resp}</arg>
+<arg>-3</arg>
+<doc>Fails if objects are unequal after converting them to integers.</doc>
+<status status="PASS" start="2025-10-22T20:19:22.619514" elapsed="0.000000"/>
+</kw>
+<doc>12AB56 -&gt; -3 (ei-numero)</doc>
+<status status="PASS" start="2025-10-22T20:19:21.575904" elapsed="1.043610"/>
+</test>
+<test id="s1-t5" name="Length Not Six Is LEN Error" line="39">
+<kw name="Write Data" owner="SerialLibrary">
+<msg time="2025-10-22T20:19:22.621535" level="TRACE">Arguments: [ '01234\n' | encoding='ascii' ]</msg>
+<msg time="2025-10-22T20:19:22.621535" level="TRACE">Return: None</msg>
+<arg>01234\n</arg>
+<arg>encoding=ascii</arg>
+<doc>Writes data into the port.</doc>
+<status status="PASS" start="2025-10-22T20:19:22.620514" elapsed="0.001021"/>
+</kw>
+<kw name="Read Until" owner="SerialLibrary">
+<msg time="2025-10-22T20:19:22.621535" level="TRACE">Arguments: [ terminator='\n' | encoding='ascii' | timeout='3' ]</msg>
+<msg time="2025-10-22T20:19:23.650310" level="TRACE">Return: '-2\r\n'</msg>
+<msg time="2025-10-22T20:19:23.650310" level="INFO">${resp} = -2
+</msg>
+<var>${resp}</var>
+<arg>terminator=\n</arg>
+<arg>encoding=ascii</arg>
+<arg>timeout=${TIMEOUT}</arg>
+<doc>Read until a termination sequence is found, size exceeded or timeout.</doc>
+<status status="PASS" start="2025-10-22T20:19:22.621535" elapsed="1.028775"/>
+</kw>
+<kw name="Strip String" owner="String">
+<msg time="2025-10-22T20:19:23.651259" level="TRACE">Arguments: [ '-2\r\n' ]</msg>
+<msg time="2025-10-22T20:19:23.651259" level="TRACE">Return: '-2'</msg>
+<msg time="2025-10-22T20:19:23.651259" level="INFO">${resp} = -2</msg>
+<var>${resp}</var>
+<arg>${resp}</arg>
+<doc>Remove leading and/or trailing whitespaces from the given string.</doc>
+<status status="PASS" start="2025-10-22T20:19:23.651259" elapsed="0.000000"/>
+</kw>
+<kw name="Should Be Equal As Integers" owner="BuiltIn">
+<msg time="2025-10-22T20:19:23.651259" level="TRACE">Arguments: [ '-2' | '-2' ]</msg>
+<msg time="2025-10-22T20:19:23.651259" level="DEBUG">Argument types are:
+&lt;class 'str'&gt;
+&lt;class 'str'&gt;</msg>
+<msg time="2025-10-22T20:19:23.651259" level="TRACE">Return: None</msg>
+<arg>${resp}</arg>
+<arg>-2</arg>
+<doc>Fails if objects are unequal after converting them to integers.</doc>
+<status status="PASS" start="2025-10-22T20:19:23.651259" elapsed="0.000000"/>
+</kw>
+<doc>01234 -&gt; -2 (pituus ≠ 6)</doc>
+<status status="PASS" start="2025-10-22T20:19:22.620514" elapsed="1.030745"/>
+</test>
+<test id="s1-t6" name="Disconnect Serial" line="46">
+<kw name="Close Port" owner="SerialLibrary">
+<msg time="2025-10-22T20:19:23.652254" level="TRACE">Arguments: [ 'COM7' ]</msg>
+<msg time="2025-10-22T20:19:23.655328" level="TRACE">Return: None</msg>
+<arg>${PORT}</arg>
+<doc>Closes specified port.</doc>
+<status status="PASS" start="2025-10-22T20:19:23.652254" elapsed="0.003074"/>
+</kw>
+<kw name="Delete Port" owner="SerialLibrary">
+<msg time="2025-10-22T20:19:23.655328" level="TRACE">Arguments: [ 'COM7' ]</msg>
+<msg time="2025-10-22T20:19:23.655328" level="TRACE">Return: None</msg>
+<arg>${PORT}</arg>
+<doc>Deletes specified port.</doc>
+<status status="PASS" start="2025-10-22T20:19:23.655328" elapsed="0.000000"/>
+</kw>
+<status status="PASS" start="2025-10-22T20:19:23.652254" elapsed="0.004099"/>
+</test>
+<status status="PASS" start="2025-10-22T20:19:19.465983" elapsed="4.190370"/>
+</suite>
+<statistics>
+<total>
+<stat pass="6" fail="0" skip="0">All Tests</stat>
+</total>
+<tag>
+</tag>
+<suite>
+<stat name="Serial Time Parser" id="s1" pass="6" fail="0" skip="0">Serial Time Parser</stat>
+</suite>
+</statistics>
+<errors>
+</errors>
+</robot>
